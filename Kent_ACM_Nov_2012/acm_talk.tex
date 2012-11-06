@@ -1,0 +1,29 @@
+\documentclass{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{listings}
+\begin{document}
+\title{Hadoop - Distributed Computing for the Masses}
+\author{Casey Stella}
+\date{\today}
+
+\frame{\titlepage} 
+
+\frame{\frametitle{Table of Contents}\tableofcontents} 
+
+\section{Overview}
+
+\frame{\frametitle{Mesos Project}
+\begin{itemize}
+\item Cluster Dynamic Resource Management
+   \begin{itemize}
+   \item Supports various Frameworks (e.g. Hadoop, MPI, Hypertable, Spark)\pause
+   \item Multi-resource scheduling (memory and CPU aware)\pause
+   \end{itemize}
+\item Apache Incubator Project (since January 2011)
+\item Build new cluster computing frameworks without reinventing low-level facilities for farming out tasks, and have them coexist with existing ones.
+\end{itemize}
+}
+
+\end{document}
