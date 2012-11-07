@@ -6,7 +6,7 @@
 \begin{document}
 \title{Hadoop - Distributed Computing for the Masses}
 \author{Casey Stella}
-\date{\today}
+\date{November 7, 2012}
 
 \frame{\titlepage} 
 
@@ -46,7 +46,7 @@
    \item Idea: build your own systems from a set of communication primitives
    \item Often designed specifically to solve one very big, very nasty problem\pause
    \item Pro: very flexible and high performance\pause
-   \item Con: can be very difficult to maintain, write and understand.  Designed for massive parallel computers.
+   \item Con: can be very difficult to maintain, write and understand.  Often designed for massive parallel computers.
    \end{itemize}
 \end{itemize}
 }
@@ -57,7 +57,7 @@
 \item Designed to execute on a cluster of commodity hardware.\pause
 \item Let tasks fail and be able to retry.\pause
 \item Bring the code to the data, rather than the data to the code.\pause
-\item Limit communication to only a certain set of operations.\pause
+\item Limit communication by allowing only a certain set of operations in a flow.\pause
 \item Inspired by functional programming
 \end{itemize}
 }
@@ -81,7 +81,7 @@
 
 \section{Apache Hadoop}
 
-\frame{\frametitle{History}
+\frame{\frametitle{Apache Hadoop -- History}
 \begin{itemize}
 \item Hadoop was derived from Google's MapReduce and Google File System (GFS) papers.\pause
 \item Open source, Apache licensed project created by Doug Cutting and Michael J. Cafarella.\pause
