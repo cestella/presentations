@@ -1,0 +1,258 @@
+\documentclass{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{xcolor,colortbl}
+\usepackage[square]{natbib}
+\usepackage{listings}
+%%\newcommand{\newblock}{}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          ]{Torino}
+\definecolor{light-green}{RGB}{144,238,144}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+%    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % DELETED
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+\begin{document}
+\author{{\bf Casey Stella}}
+\institute[Hortonworks]{\includegraphics[width=40px,height=17px]{logo}}
+\title{{\bf Apache Pig for Data Science}}
+\date{April 9, 2014} 
+
+\frame{\titlepage} 
+
+\frame{\frametitle{Table of Contents}\tableofcontents} 
+
+\section{Preliminaries}
+
+\frame{\frametitle{Introduction}
+\begin{itemize}
+\item I'm a Principal Architect at Hortonworks
+\item I work primarily on Data Science in the Hadoop Ecosystem
+\item Prior to this, I've spent my time and had a lot of fun
+  \begin{itemize}
+  \item Doing data mining on medical data at Explorys using the Hadoop ecosystem
+  \item Doing signal processing on seismic data at Ion Geophysical using MapReduce
+  \item Being a graduate student in the Math department at Texas A\&M in algorithmic complexity theory
+  \end{itemize}
+\item I'm going to talk about Apache Pig's role for doing scalable data science.
+\end{itemize}
+}
+
+\subsection{Apache Hadoop}
+
+\frame{\frametitle{Apache Hadoop: What is it?}
+Hadoop is a distributed storage and processing system
+\begin{itemize}
+\item Scalable -- Efficiently store and process data
+\item Reliable -- Failover and redundant storage
+\item Vast -- Many ecosystem projects surrounding data ingestion, processing and export
+\item Economical -- Use commodity hardware
+\end{itemize}
+}
+
+\frame{\frametitle{Apache Hadoop: Who is using it?}
+\begin{figure}
+   \includegraphics{hadoop_powered_by.png}
+\end{figure}
+}
+
+\subsection{Apache Pig}
+
+\frame{\frametitle{Apache Pig: What is it?}
+Pig is a high level scripting language for operating on large datasets inside Hadoop
+\begin{itemize}
+\item Compiles scripting language into MapReduce operations
+\item Optimizes such that the minimal number of MapReduce jobs need be run
+\item Familiar relational primitives built in (i.e. [left, right, outer, cross] join)
+\item Extensible via User Defined Functions for special processing
+\end{itemize}
+}
+
+\begin{frame}[fragile]
+\frametitle{Apache Pig: An Familiar Example}
+
+\begin{lstlisting}
+SENTENCES= load '...' as (sentence:chararray);
+WORDS = foreach SENTENCES 
+        generate flatten(TOKENIZE(sentence)) 
+        as word;
+WORD_GROUPS = group WORDS by word;
+WORD_COUNTS = foreach WORD_GROUPS 
+              generate group as word, COUNT(WORDS);
+store WORD_COUNTS into '...';
+\end{lstlisting}
+\end{frame}
+
+\section{Pig in the Data Science Toolbag}
+
+\subsection{Understanding Your Data}
+
+\frame{\frametitle{Understanding Data}
+D.J. Patil in {\em Data Jujitsu}
+\begin{quote}
+"80\% of the work in any data project is in cleaning the data."
+\end{quote}
+}
+
+\frame{\frametitle{Understanding Data}
+A core pre-requisite to analyzing data is understanding data's shape and distribution.
+This requires (among other things):
+\begin{itemize}
+\item Computing distribution statistics on data
+\item Sampling data
+\end{itemize}
+A LinkedIn project called {\bf datafu}\footnote{http://github.com/linkedin/datafu} 
+provides some of these tooling in the form of Pig UDFs:
+\begin{itemize}
+\item Computing quantiles of data
+\item Sampling
+  \begin{itemize}
+  \item Uniform sampling by percentage (built into pig)
+  \item Uniform sampling by reservoir sampling
+  \item Weighted sampling without replacement
+  \item Random Sample with replacement
+  \end{itemize}
+\end{itemize}
+}
+
+\frame{\frametitle{Case Study: Bootstrapping}
+{\bf Bootstrapping} is a resampling technique which is intended to measure accuracy of sample estimates.  
+It does this by measuring an estimator (such as mean) across a set of random samples with replacement
+from an original (possibly large) dataset.
+}
+
+\frame{\frametitle{Case Study: Bootstrapping}
+Datafu provides two tools which can be used together to provide that random sample with replacement:
+\begin{itemize}
+\item SimpleRandomSampleWithReplacementVote -- Ranks for every position in a k-sample multiple candidates and a score
+\item SimpleRandomSampleWithReplacementElect -- Chooses, for every position in a k-sample, the candidate with the lowest score
+\end{itemize}
+
+See the javadocs for SimpleRandomSampleWithReplacement for an example of generating a boostrap of the mean estimator.
+TODO: cite X Meng for this.
+}
+
+\subsection{Machine Learning with Pig}
+
+\frame{\frametitle{What is Machine Learning?}
+Machine learning is the study of systems that can learn from data.
+The general tasks fall into one of two categories:
+\begin{itemize}
+\item Unsupervised Learning
+  \begin{itemize}
+  \item Clustering
+  \item Outlier detection
+  \item Market Basket Analysis
+  \end{itemize}
+\item Supervised Learning
+  \begin{itemize}
+  \item Classification
+  \item Regression
+  \item Recommendation
+  \end{itemize}
+\end{itemize}
+}
+
+\frame{\frametitle{Building Machine Learning Models with Pig}
+Machine Learning at scale in Hadoop generally falls into two categories:
+\begin{itemize}
+\item Build one large model on all (or almost all) of the data 
+\item Sample the large dataset and build the model based on that sample
+\end{itemize} 
+Pig can assist in intelligently sampling down the large data into a training set.  You can then use your favorite
+ML algorithm (which can be run on the JVM) to generate a machine learning model.
+}
+
+\subsection{Applying Models with Pig}
+\frame{\frametitle{Applying Models with Pig}
+Pig shines at batch application of an existing ML model.  This generally is of the form:
+\begin{itemize}
+\item Train a model out of band
+\item Write a UDF in Java or another JVM language which can apply the model to a data point
+\item Call the UDF from a pig script to distribute the application of the model across your data in parallel
+\end{itemize}
+}
+
+
+\section{Unstructured Data Analysis with Pig}
+
+\frame{\frametitle{What is Natural Language Processing?}
+\begin{itemize}
+\item Natural language processing is the field of Computer Science, Linguistics \& Math that covers computer understanding and manipulation of human language.
+  \begin{itemize}
+  \item Historically, linguists hand-coded rules to accomplish much analysis
+  \item Most modern approaches involves using Machine Learning
+  \end{itemize}
+\item Mature field with many useful libraries on the JVM
+  \begin{itemize}
+  \item Apache OpenNLP
+  \item Stanford CoreNLP
+  \item MALLET
+  \end{itemize}
+\end{itemize}
+}
+
+\frame{\frametitle{Natural Language Processing with Large Data}
+\begin{itemize}
+\item Generally low-volume, complex analysis
+  \begin{itemize}
+  \item Big companies often don't have a ton of natural language data
+  \item Dropped previously because they were unable to analyze
+  \end{itemize}
+\item Sometimes high-volume, complex analysis
+  \begin{itemize}
+  \item Search Engines
+  \item Social media content analysis
+  \end{itemize}
+\item Typically many small-data problems in parallel
+  \begin{itemize}
+  \item Often requires only the context of a single document
+  \item Ideal for encapsulating as Pig UDFs
+  \end{itemize}
+
+\end{itemize}
+}
+
+\frame{\frametitle{Natural Language Processing: Demo}
+
+\begin{itemize}
+\item Stanford CoreNLP integrated the work of Richard Socher, Alex Perelygin, et al using recursive deep neural networks to
+predict sentiment of movie reviews.
+\item Let's look at how to encapsulate this into a Pig UDF and run on some movie review data.
+\end{itemize}
+}
+
+\section{Questions \& Bibliography}
+\frame{\frametitle{Questions \& Bibliography}
+Thanks for your attention!  Questions? \\
+\begin{itemize}
+\item Code and scripts for this talk at http://github.com/cestella/NLPWithMahout
+\item Find me at http://caseystella.com 
+\item Twitter handle: @casey\_stella 
+\item Email address: cstella@hortonworks.com
+\end{itemize}
+}
+
+\end{document}
