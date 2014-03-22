@@ -18,5 +18,3 @@ Presentations
 * [Hadoop - Distributed Computing for the Masses](https://github.com/cestella/presentations/tree/master/Kent_ACM_Nov_2012) given at Kent State University's ACM Programming Club in November 2012.  Presentation [here](https://github.com/cestella/presentations/blob/master/Kent_ACM_Nov_2012/acm_talk.pdf?raw=true).
 * [Better News through Machine Learning](https://github.com/cestella/better_news) given at Kent State University's ACM Programming Club in September 2011.  Presentation [here](https://github.com/cestella/better_news/blob/master/presentation/Better_News.pdf?raw=true).
 
-Contact Information
-==================
