@@ -1,8 +1,10 @@
 Public Facing Presentations
 ===================
 
-This repository is intended to hold the public presentations given by
-Casey Stella.
+Hi!  Glad you found this page.  My name is Casey Stella and this repository 
+is intended to hold my public presentations.  My main online presence, 
+including my resume and contact information,
+may be found at [http://www.caseystella.com](http://www.caseystella.com).  
 
 Presentations
 =============
@@ -18,4 +20,3 @@ Presentations
 
 Contact Information
 ==================
-My main online presence, including my resume and contact information, may be found at [http://www.caseystella.com](http://www.caseystella.com).
