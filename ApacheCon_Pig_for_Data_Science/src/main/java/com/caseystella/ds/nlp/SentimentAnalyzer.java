@@ -1,6 +1,9 @@
 package com.caseystella.ds.nlp;
 
+import com.caseystella.ds.nlp.rollup.Sentence;
+import com.caseystella.ds.nlp.rollup.SentimentRollup;
 import com.google.common.base.Function;
+import edu.stanford.nlp.ie.machinereading.structure.AnnotationUtils;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -9,10 +12,9 @@ import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.util.logging.RedwoodConfiguration;
+import org.ejml.simple.SimpleMatrix;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by cstella on 3/21/14.
@@ -24,14 +26,13 @@ public enum SentimentAnalyzer implements Function<String, SentimentClass> {
     public SentimentClass apply(String document)
     {
         // shut off the annoying intialization messages
-        RedwoodConfiguration.empty().capture(System.err).apply();
         Properties props = new Properties();
         //specify the annotators that we want to use to annotate the text.  We need a tokenized sentence with POS tags to extract sentiment.
         //this forms our pipeline
         props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         Annotation annotation = pipeline.process(document);
-        EnumMap<SentimentClass, Integer> sentimentCount = new EnumMap<SentimentClass, Integer>(SentimentClass.class);
+        List<Sentence> sentences = new ArrayList<Sentence>();
         /*
          * We're going to iterate over all of the sentences and extract the sentiment.  We'll adopt a majority rule policy
          */
@@ -42,27 +43,23 @@ public enum SentimentAnalyzer implements Function<String, SentimentClass> {
             Tree sentimentTree = sentence.get(SentimentCoreAnnotations.AnnotatedTree.class);
             //Letting CoreNLP roll up the sentiment for us
             int sentimentClassIdx = RNNCoreAnnotations.getPredictedClass(sentimentTree);
+
             //now we add to our list of sentences and sentiments
-            SentimentClass sentimentClass = SentimentClass.getGeneral(sentimentClassIdx);
+            SentimentClass sentimentClass = SentimentClass.getSpecific(sentimentClassIdx);
 
-            Integer classCount = sentimentCount.get(sentimentClass);
-            if(classCount == null)
+            double[] probs = new double[SentimentClass.values().length];
             {
-                classCount = 0;
+                SimpleMatrix mat = RNNCoreAnnotations.getPredictions(sentimentTree);
+                for(int i = 0;i < SentimentClass.values().length;++i)
+                {
+                    probs[i] = mat.get(i);
+                }
             }
-            sentimentCount.put(sentimentClass, classCount+1);
-        }
-        SentimentClass ret = null;
-        int maxCount = -1;
-        for(Map.Entry<SentimentClass, Integer> entry : sentimentCount.entrySet())
-        {
-            if(ret == null || entry.getValue() > maxCount)
-            {
-                ret = entry.getKey();
-                maxCount = entry.getValue();
-            }
+            String sentenceStr = AnnotationUtils.sentenceToString(sentence).replace("\n", "");
+            sentences.add(new Sentence(probs, sentenceStr, sentimentClass));
         }
 
-        return ret;
+
+        return SentimentRollup.WILSON_SCORE.apply(sentences);
     }
 }
