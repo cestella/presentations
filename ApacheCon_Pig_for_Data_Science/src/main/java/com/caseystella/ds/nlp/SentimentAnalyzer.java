@@ -38,15 +38,15 @@ public enum SentimentAnalyzer implements Function<String, SentimentClass> {
          */
         for( CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class))
         {
-            //for each sentence, we get the sentiment annotation
-            //this comes in the form of a tree of annotations
+            //for each sentence, we get the sentiment that CoreNLP thinks this sentence indicates.
             Tree sentimentTree = sentence.get(SentimentCoreAnnotations.AnnotatedTree.class);
-            //Letting CoreNLP roll up the sentiment for us
             int sentimentClassIdx = RNNCoreAnnotations.getPredictedClass(sentimentTree);
-
-            //now we add to our list of sentences and sentiments
             SentimentClass sentimentClass = SentimentClass.getSpecific(sentimentClassIdx);
 
+            /*
+             * Each possible sentiment has an associated probability, so let's pull the entire
+             * set of probabilities across all sentiment classes.
+             */
             double[] probs = new double[SentimentClass.values().length];
             {
                 SimpleMatrix mat = RNNCoreAnnotations.getPredictions(sentimentTree);
@@ -55,11 +55,29 @@ public enum SentimentAnalyzer implements Function<String, SentimentClass> {
                     probs[i] = mat.get(i);
                 }
             }
+            /*
+             * Add the sentence and the associated probabilities to our list.
+             */
             String sentenceStr = AnnotationUtils.sentenceToString(sentence).replace("\n", "");
             sentences.add(new Sentence(probs, sentenceStr, sentimentClass));
         }
 
-
+        /*
+         * Finally, rollup the score of the entire document given the list of sentiments
+         * for each sentence.
+         *
+         * I have found that this is a surprisingly difficult thing.  We're going to use the fact that
+         * we are mapping these documents onto Positive, Negative to use a technique that people use
+         * to figure out overall product ratings from individual star ratings, the Wilson Score.
+         * See http://www.evanmiller.org/how-not-to-sort-by-average-rating.html.
+         *
+         * For your convenience, I have implemented a number of other approaches, including:
+         *  * Basic majority-rule voting
+         *  * Max probability across all sentiments for all sentences
+         *  * Last sentence wins
+         *  * Longest sentence wins
+         *
+         */
         return SentimentRollup.WILSON_SCORE.apply(sentences);
     }
 }

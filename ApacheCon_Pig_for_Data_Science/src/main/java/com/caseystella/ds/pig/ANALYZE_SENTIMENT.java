@@ -9,20 +9,28 @@ import org.apache.pig.data.Tuple;
 import java.io.IOException;
 
 /**
- * Created by cstella on 3/21/14.
+ * A pig UDF which accepts a document and returns a sentiment class: Positive or Negative
+ * The assumptions are that this document is a movie review and uses, under the hood, the
+ * Stanford CoreNLP Sentiment classifier.
  */
 public class ANALYZE_SENTIMENT extends EvalFunc<String>
 {
     @Override
     public String exec(Tuple objects) throws IOException
     {
+        //stop CoreNLP from printing to stdout
         RedwoodConfiguration.empty().capture(System.err).apply();
+        //grab the document
         String document = (String)objects.get(0);
         if(document == null || document.length() == 0)
         {
+            //if the document is malformed, return null, which is to say, we don't know how to
+            //handle it
             return null;
         }
+        //Call out to our handler that we wrote to do the sentiment analysis
         SentimentClass sentimentClass = SentimentAnalyzer.INSTANCE.apply(document);
+
         return sentimentClass == null?null: sentimentClass.toString();
     }
 }

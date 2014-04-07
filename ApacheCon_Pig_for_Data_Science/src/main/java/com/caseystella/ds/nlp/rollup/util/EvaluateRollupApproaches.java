@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by cstella on 3/25/14.
+ * This is a utility that is intended to evaluate rollup approaches from some pre-processed data.
  */
 public class EvaluateRollupApproaches
 {

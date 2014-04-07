@@ -7,7 +7,9 @@ import com.caseystella.ds.nlp.rollup.Sentence;
 import java.util.List;
 
 /**
- * Created by cstella on 3/26/14.
+ * Implementation of the Wilson Score pulled from http://stackoverflow.com/questions/4260836/c-sharp-from-ruby-wilson-score
+ * and ported to Java.
+ *
  */
 public class WilsonScore implements ISentimentRollup{
 

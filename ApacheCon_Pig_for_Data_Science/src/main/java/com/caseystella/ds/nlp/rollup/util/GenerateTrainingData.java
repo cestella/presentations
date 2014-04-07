@@ -18,7 +18,9 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Created by cstella on 3/24/14.
+ * This generates training data for the rollup approach analysis
+ *
+ * @see com.caseystella.ds.nlp.rollup.util.EvaluateRollupApproaches
  */
 public class GenerateTrainingData
 {
