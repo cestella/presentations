@@ -6,6 +6,9 @@ is intended to hold my public presentations.  My main online presence,
 including my resume and contact information,
 may be found at [http://www.caseystella.com](http://www.caseystella.com).  
 
+Please note that all code that I wrote in this repo is Apache v2
+licensed.
+
 Presentations
 =============
 
