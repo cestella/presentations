@@ -1,0 +1,261 @@
+\documentclass{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{xcolor,colortbl}
+\usepackage[square]{natbib}
+\usepackage{listings}
+%%\newcommand{\newblock}{}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          ]{Torino}
+\definecolor{light-green}{RGB}{144,238,144}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+%    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % DELETED
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+\begin{document}
+\author{{\bf Casey Stella}}
+\institute[Hortonworks]{\includegraphics[width=40px,height=17px]{logo}}
+\title{{\bf Apache Pig for Data Science}}
+\date{May 12, 2014} 
+
+\frame{\titlepage} 
+
+\frame{\frametitle{Table of Contents}\tableofcontents} 
+
+\section{Preliminaries}
+
+\frame{\frametitle{Introduction}
+\begin{itemize}
+\item I'm a Principal Architect at Hortonworks
+\item I work primarily doing Data Science in the Hadoop Ecosystem
+\item Prior to this, I've spent my time and had a lot of fun
+  \begin{itemize}
+  \item Doing data mining on medical data at Explorys using the Hadoop ecosystem
+  \item Doing signal processing on seismic data at Ion Geophysical using MapReduce
+  \item Being a graduate student in the Math department at Texas A\&M in algorithmic complexity theory
+  \end{itemize}
+\item I'm going to talk about Apache Pig's role for doing scalable data science.
+\end{itemize}
+}
+
+\subsection{Apache Pig}
+
+\frame{\frametitle{Apache Pig: What is it?}
+Pig is a high level scripting language for operating on large datasets inside Hadoop\pause
+\begin{itemize}
+\item Transforms high level data operations into MapReduce/Tez jobs\pause
+\item Optimizes such that the minimal number of MapReduce/Tez jobs need be run\pause
+\item Familiar relational primitives available \pause
+\item Extensible via User Defined Functions and Loaders for customized data processing and formats
+\end{itemize}
+}
+
+\begin{frame}[fragile]
+\frametitle{Apache Pig: An Familiar Example}
+
+\begin{lstlisting}
+SENTENCES= load '...' as (sentence:chararray);
+WORDS = foreach SENTENCES 
+        generate flatten(TOKENIZE(sentence)) 
+        as word;
+WORD_GROUPS = group WORDS by word;
+WORD_COUNTS = foreach WORD_GROUPS 
+              generate group as word, COUNT(WORDS);
+store WORD_COUNTS into '...';
+\end{lstlisting}
+\end{frame}
+
+\section{Pig in the Data Science Toolbag}
+
+\subsection{Understanding Your Data}
+
+\frame{\frametitle{Understanding Data}
+\begin{exampleblock}{}
+  {\Large ``80\% of the work in any data project is in cleaning the data.''}
+  \vskip5mm
+  \hspace*\fill{\small--- D.J. Patel in {\em Data Jujitsu} }
+\end{exampleblock}
+}
+
+\frame{\frametitle{Understanding Data}
+A core pre-requisite to analyzing data is understanding data's shape and distribution.
+This requires (among other things):
+\begin{itemize}
+\item Computing distribution statistics on data
+\item Sampling data
+\end{itemize}
+}
+\frame{\frametitle{Understanding Data: Datafu}
+An Apache Incubating project called {\bf datafu}\footnote{http://datafu.incubator.apache.org/} 
+provides some of these tooling in the form of Pig UDFs:
+\begin{itemize}
+\item Computing quantiles of data\pause
+\item Sampling
+  \begin{itemize}
+  \item Bernoulli sampling by probability (built into pig)\pause
+  \item Simple Random Sample \pause
+  \item Reservoir sampling\pause
+  \item Weighted sampling without replacement\pause
+  \item Random Sample with replacement
+  \end{itemize}
+\end{itemize}
+}
+
+\subsection{Machine Learning with Pig}
+
+\frame{\frametitle{What is Machine Learning?}
+Machine learning is the study of systems that can learn from data.
+The general tasks fall into one of two categories:\pause
+\begin{itemize}
+\item Unsupervised Learning
+  \begin{itemize}
+  \item Clustering
+  \item Outlier detection
+  \item Market Basket Analysis
+  \end{itemize}\pause
+\item Supervised Learning
+  \begin{itemize}
+  \item Classification
+  \item Regression
+  \item Recommendation
+  \end{itemize}
+\end{itemize}
+}
+
+\frame{\frametitle{Building Machine Learning Models with Pig}
+Machine Learning at scale in Hadoop generally falls into two categories:
+\begin{itemize}
+\item Build one large model on all (or almost all) of the data 
+\item Sample the large dataset and build the model based on that sample
+\end{itemize} \pause
+\vfill
+Pig can assist in intelligently sampling down the large data into a training set.  You can then use your favorite
+ML algorithm (which can be run on the JVM) to generate a machine learning model.
+}
+
+\subsection{Applying Models with Pig}
+\frame{\frametitle{Applying Models with Pig}
+Pig shines at batch application of an existing ML model.  This generally is of the form:
+\vfill
+\begin{itemize}
+\item Train a model out-of-band\vfill \pause
+\item Write a UDF in Java or another JVM language which can apply the model to a data point\vfill\pause
+\item Call the UDF from a pig script to distribute the application of the model across your data in parallel\vfill
+\end{itemize}
+}
+
+
+\section{Unstructured Data Analysis with Pig}
+
+\frame{\frametitle{What is Natural Language Processing?}
+\begin{itemize}
+\item Natural language processing is the field of Computer Science, Linguistics \& Math that covers computer understanding and manipulation of human language.
+  \begin{itemize}
+  \item Historically, linguists hand-coded rules to accomplish much analysis
+  \item Most modern approaches involves using Machine Learning
+  \end{itemize}\pause
+\vfill
+\item Mature field with many useful libraries on the JVM
+  \begin{itemize}
+  \item Apache OpenNLP
+  \item Stanford CoreNLP
+  \item MALLET
+  \end{itemize}
+\end{itemize}
+\vfill
+}
+
+\frame{\frametitle{Natural Language Processing with Large Data}
+\begin{itemize}
+\item Generally low-volume, complex analysis
+  \begin{itemize}
+  \item Big companies often don't have a ton of natural language data
+  \item Dropped previously because they were unable to analyze
+  \end{itemize}\pause
+\vfill
+\item Sometimes high-volume, complex analysis
+  \begin{itemize}
+  \item Search Engines
+  \item Social media content analysis
+  \end{itemize}\pause
+\vfill
+\item Typically many small-data problems in parallel
+  \begin{itemize}
+  \item Often requires only the context of a single document
+  \item Ideal for encapsulating as Pig UDFs
+  \end{itemize}
+\end{itemize}
+\vfill
+}
+
+\frame{\frametitle{Natural Language Processing: Demo}
+
+\begin{itemize}
+\item Stanford CoreNLP integrated the work of Richard Socher, et al ~\citep{Socher-etal:2013} using recursive deep neural networks to
+predict sentiment of movie reviews.\vfill
+\item There is a large set of IMDB movie reviews  used to analyze sentiment analysis~\citep{maas-EtAl}.\vfill
+\item Let's look at how to encapsulate this into a Pig UDF and run on some movie review data.
+\vfill
+\end{itemize}
+}
+
+\frame{\frametitle{Results}
+\begin{itemize}
+\item Executing on a sample of size $1022$ Positive and Negative documents.
+\item Overall Accuracy of $77.2\%$
+\end{itemize}
+
+\begin{tabular}{l|l|c|c|c}
+\multicolumn{2}{c}{}&\multicolumn{2}{c}{Actual}&\\
+\cline{3-4}
+\multicolumn{2}{c|}{}&Positive&Negative&\multicolumn{1}{c}{Total}\\
+\cline{2-4}
+\multirow{2}{*}{Predicted}& Positive & $367$ & $114$ & $481$\\
+\cline{2-4}
+& Negative & $119$ & $422$ & $541$\\
+\cline{2-4}
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{Total} & \multicolumn{1}{c}{$486$} & \multicolumn{1}{c}{$536$} & \multicolumn{1}{c}{$1022$}\\
+\end{tabular}
+}
+
+\section{Questions \& Bibliography}
+
+\frame{\frametitle{Questions}
+Thanks for your attention!  Questions? 
+\vfill
+\begin{itemize}
+\item Code \& scripts for this talk available on my github presentation page.\footnote{http://github.com/cestella/presentations/}
+\item Find me at http://caseystella.com 
+\item Twitter handle: @casey\_stella 
+\item Email address: cstella@hortonworks.com
+\end{itemize}
+}
+
+\frame{\frametitle{Bibliography}
+\bibliography{Pig_for_DataScience}{}
+\bibliographystyle{plain}
+}
+\end{document}

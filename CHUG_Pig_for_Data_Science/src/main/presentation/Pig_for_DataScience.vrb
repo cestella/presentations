@@ -1,0 +1,12 @@
+\frametitle{Apache Pig: An Familiar Example}
+
+\begin{lstlisting}
+SENTENCES= load '...' as (sentence:chararray);
+WORDS = foreach SENTENCES
+        generate flatten(TOKENIZE(sentence))
+        as word;
+WORD_GROUPS = group WORDS by word;
+WORD_COUNTS = foreach WORD_GROUPS
+              generate group as word, COUNT(WORDS);
+store WORD_COUNTS into '...';
+\end{lstlisting}
