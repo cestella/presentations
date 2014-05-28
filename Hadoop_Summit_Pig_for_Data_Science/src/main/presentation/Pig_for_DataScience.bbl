@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{maas-EtAl}
+Andrew~L. Maas, Raymond~E. Daly, Peter~T. Pham, Dan Huang, Andrew~Y. Ng, and
+  Christopher Potts.
+\newblock Learning word vectors for sentiment analysis.
+\newblock In {\em Proceedings of the 49th Annual Meeting of the Association for
+  Computational Linguistics: Human Language Technologies}, pages 142--150,
+  Portland, Oregon, USA, June 2011. Association for Computational Linguistics.
+
+\bibitem{Socher-etal:2013}
+Richard Socher, Alex Perelygin, Jean Wu, Jason Chuang, Christopher~D. Manning,
+  Andrew~Y. Ng, and Christopher Potts.
+\newblock Recursive deep models for semantic compositionality over a sentiment
+  treebank.
+\newblock In {\em Proceedings of the 2013 Conference on {E}mpirical {M}ethods
+  in {N}atural {L}anguage {P}rocessing}, pages 1631--1642, Stroudsburg, PA,
+  October 2013. Association for Computational Linguistics.
+
+\end{thebibliography}

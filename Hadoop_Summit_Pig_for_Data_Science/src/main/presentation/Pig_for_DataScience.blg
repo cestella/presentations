@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2012)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Pig_for_DataScience.aux
+The style file: plain.bst
+Database file #1: Pig_for_DataScience.bib
+You've used 2 entries,
+            2118 wiz_defined-function locations,
+            513 strings with 4743 characters,
+and the built_in function-call counts, 1269 in all, are:
+= -- 129
+> -- 71
+< -- 2
++ -- 28
+- -- 26
+* -- 98
+:= -- 196
+add.period$ -- 8
+call.type$ -- 2
+change.case$ -- 19
+chr.to.int$ -- 0
+cite$ -- 2
+duplicate$ -- 48
+empty$ -- 82
+format.name$ -- 26
+if$ -- 276
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 2
+newline$ -- 13
+num.names$ -- 4
+pop$ -- 23
+preamble$ -- 1
+purify$ -- 17
+quote$ -- 0
+skip$ -- 39
+stack$ -- 0
+substring$ -- 82
+swap$ -- 22
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 8
+warning$ -- 0
+while$ -- 10
+width$ -- 3
+write$ -- 28
