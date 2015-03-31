@@ -1,0 +1,146 @@
+\documentclass{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{xcolor,colortbl}
+\usepackage[square]{natbib}
+\usepackage{listings}
+%%\newcommand{\newblock}{}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          ]{Torino}
+\definecolor{light-green}{RGB}{144,238,144}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+%    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % DELETED
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+\begin{document}
+\author{{\bf Casey Stella}}
+\institute[Hortonworks]{\includegraphics[width=40px,height=17px]{logo}}
+\title{{\bf IPython Notebook as a Unified Data Science Interface for Hadoop}}
+\date{April, 2015} 
+
+\frame{\titlepage} 
+
+\frame{\frametitle{Table of Contents}\tableofcontents} 
+
+\section{Preliminaries}
+
+\frame{\frametitle{Introduction}
+\begin{itemize}
+\item I'm a Principal Architect at Hortonworks
+\item I work primarily doing Data Science in the Hadoop Ecosystem
+\item Prior to this, I've spent my time and had a lot of fun
+  \begin{itemize}
+  \item Doing data mining on medical data at Explorys using the Hadoop ecosystem
+  \item Doing signal processing on seismic data at Ion Geophysical using MapReduce
+  \item Being a graduate student in the Math department at Texas A\&M in algorithmic complexity theory
+  \end{itemize}
+\end{itemize}
+}
+
+\section{Data Science in Hadoop}
+
+\frame{\frametitle{Data Science in Hadoop}
+Hadoop is a great environment for data transformation, but as a data science environment it poses challenges.\pause
+\begin{itemize}
+\item A single system where both data transformation and data science algorithms can be expressed naturally can be a challenging line to toe.\pause
+\item The popular languages of data science with mature external libraries do not coincide with the JVM languages.\pause
+\item A system to represent the output of data science and analysis, summary analysis and visualizations, can often are either limited in scope of capabilities or require extensive custom coding.\pause
+\end{itemize}
+\vfill
+A unified environment for data science is elusive, but we do have a great start with the Python bindings of Spark and IPython Notebook.
+}
+
+\frame{\frametitle{Unified Data Science Environment}
+What are the components of a unified data science environment?\pause
+\begin{itemize}
+  \item A single environment supporting mixed-mode local and distributed processing. \pause{\bf Apache Spark}\pause
+  \item The ability to ``reach-out'' to languages with heavy data science algorithm support. \pause {\bf PySpark}\pause
+  \item Strong, seamless SQL integration. \pause {\bf SparkSQL}\pause
+  \item Ability to visualize and report summary data. \pause {\bf IPython Notebook}
+\end{itemize}
+}
+
+\section{Unified Environment}
+
+\frame{\frametitle{Apache Spark}
+Apache Spark is an alternative computing system which can run on Yarn and provides
+\begin{itemize}
+\item An Elegant, Rich and Usable Core API
+\item An Expansive set of ecosystem libraries built around the Core API
+\item Hive compatibility via SparkSQL
+\item Mature Python support for both core APIs as well as the spark ecosystem projects
+\end{itemize}
+}
+
+\frame{\frametitle{Spark: Core Ideas}
+Core API facilitates expressing algorithms in terms of transformations of distributed datasets
+\begin{itemize}
+\item Datasets are Distributed and Resilient (so named RDDs)
+\item Datasets are automatically rebuilt on failure
+\item Datasets have configurable persistence
+\item Transformations are parallel (e.g. map, reduceByKey, filter)
+\item Transformations support some relational primitives (e.g. join, cartesian product)
+\end{itemize}
+}
+
+\frame{\frametitle{PySpark: Python Bindings}
+In addition to Java and Scala, Spark has solid integration with Python:
+\begin{itemize}
+  \item Supports the standard CPython interpreter
+  \item There is Python support for the Spark core APIs and most ecosystem APIs, such as MLLib.
+  \item IPython Notebook support comes out of the box
+\end{itemize}
+}
+
+\frame{\frametitle{Spark: SQL Integration}
+The Spark component which lets you query structured data in Spark using SQL is called Spark SQL
+\begin{itemize}
+\item Has integrated APIs in Python, Scala and Java
+\item Allows you to integrate Spark Core APIs with SQL
+\item Provides Hive metastore integration so that data managed in Hive can be seamlessly processed via Spark
+\end{itemize}
+}
+
+\section{Demo}
+\frame{\frametitle{Open Payments Data}
+Sometimes, doctors and hospitals have financial relationships with health care manufacturing companies. These relationships can include money for research activities, gifts, speaking fees, meals, or travel. The Social Security Act requires CMS to collect information from applicable manufacturers and group purchasing organizations (GPOs) in order to report information about their financial relationships with physicians and hospitals.
+\vfill
+Let's use Python and Spark via IPython Notebook to explore this dataset on Hadoop.
+}
+
+\section{Questions}
+
+\frame{\frametitle{Questions}
+Thanks for your attention!  Questions? 
+\begin{itemize}
+\item Code \& scripts for this talk available on my github presentation page.\footnote{http://github.com/cestella/presentations/}
+\item Find me at http://caseystella.com 
+\item Twitter handle: @casey\_stella 
+\item Email address: cstella@hortonworks.com
+\end{itemize}
+}
+
+\end{document}
