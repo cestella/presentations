@@ -7,3 +7,5 @@
 .DS_Store
 target
 *.swp
+*.bbl
+*.blg

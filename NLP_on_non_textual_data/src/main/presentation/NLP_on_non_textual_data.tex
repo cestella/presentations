@@ -6,7 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{inconsolata}
 \usepackage{xcolor,colortbl}
-\usepackage[square]{natbib}
+\usepackage{natbib}
 \usepackage{listings}
 %%\newcommand{\newblock}{}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
@@ -38,7 +38,7 @@
 \begin{document}
 \author{{\bf Casey Stella}}
 \institute[Hortonworks]{\includegraphics[width=40px,height=17px]{logo}}
-\title{{\bf Using Natural Language Processing on Non-Textual Data with MLLib}}
+\title{{\bf NLP Structured Data Investigation on Non-Text}}
 \date{April, 2015} 
 
 \frame{\titlepage} 
@@ -60,75 +60,51 @@
 \end{itemize}
 }
 
-\section{Data Science in Hadoop}
-
-\frame{\frametitle{Data Science in Hadoop}
-Hadoop is a great environment for data transformation, but as a data science environment it poses challenges.\pause
+\frame{\frametitle{Domain Challenges in Data Science}
+A data scientist has to merge analytical skills with domain expertise.
 \begin{itemize}
-\item A single system where both data transformation and data science algorithms can be expressed naturally can be a challenging line to toe.\pause
-\item The popular languages of data science with mature external libraries do not coincide with the JVM languages.\pause
-\item A system to represent the output of data science and analysis, summary analysis and visualizations, can often are either limited in scope of capabilities or require extensive custom coding.\pause
-\end{itemize}
+  \item Often we're thrown into places where we have insufficient domain experience.
+  \item Gaining this expertise can be challenging and time-consuming.
+  \item Unsupervised machine learning techniques can be very useful to understand complex data relationships.
+\end{itemize}\pause
 \vfill
-A unified environment for data science is elusive, but we do have a great start with the Python bindings of Spark and IPython Notebook.
+We'll use an unsupervised structure learning algorithm borrowed from NLP to look at medical data.
 }
 
-\frame{\frametitle{Unified Data Science Environment}
-What are the components of a unified data science environment?\pause
+\section{Borrowing from NLP}
+
+\frame{\frametitle{Word2Vec}
+Word2Vec is a vectorization model created by Google ~\citep{DBLP:journals/corr/abs-1301-3781}
+that attempts to learn relationships between words automatically given a large corpus of sentences.
 \begin{itemize}
-  \item A single environment supporting mixed-mode local and distributed processing. \pause{\bf Apache Spark}\pause
-  \item The ability to ``reach-out'' to languages with heavy data science algorithm support. \pause {\bf PySpark}\pause
-  \item Strong, seamless SQL integration. \pause {\bf SparkSQL}\pause
-  \item Ability to visualize and report summary data. \pause {\bf IPython Notebook}
+  \item Gives us a way to find similar words by finding near neighbors in the vector space with cosine similarity.\pause
+  \item Uses a neural network to learn vector representations.\pause
+  \item Recent work by Pennington, Socher, and Manning ~\citep{D14-1162} shows that the word2vec model is equivalent to weighting a word co-occurance matrix weighting based on window distance and lowering the dimension by matrix factorization. \pause
 \end{itemize}
+{\bf Takeaway:} The technique boils down, intuitively, to a riff on word co-occurence.  See here\footnote{http://radimrehurek.com/2014/12/making-sense-of-word2vec/} for more.
 }
 
-\section{Unified Environment}
-
-\frame{\frametitle{Apache Spark}
-Apache Spark is an alternative computing system which can run on Yarn and provides
+\frame{\frametitle{Clinical Data as Sentences}
+Clinical encounters form a sort of sentence over time.  For a given encounter:
 \begin{itemize}
-\item An Elegant, Rich and Usable Core API
-\item An Expansive set of ecosystem libraries built around the Core API
-\item Hive compatibility via SparkSQL
-\item Mature Python support for both core APIs as well as the spark ecosystem projects
+\item Vitals are measured (e.g. height, weight, BMI).
+\item Labs are performed and results are recorded (e.g. blood tests).
+\item Procedures are performed.
+\item Diagnoses are made (e.g. Diabetes).
+\item Drugs are prescribed.
 \end{itemize}
-}
-
-\frame{\frametitle{Spark: Core Ideas}
-Core API facilitates expressing algorithms in terms of transformations of distributed datasets
-\begin{itemize}
-\item Datasets are Distributed and Resilient (so named RDDs)
-\item Datasets are automatically rebuilt on failure
-\item Datasets have configurable persistence
-\item Transformations are parallel (e.g. map, reduceByKey, filter)
-\item Transformations support some relational primitives (e.g. join, cartesian product)
-\end{itemize}
-}
-
-\frame{\frametitle{PySpark: Python Bindings}
-In addition to Java and Scala, Spark has solid integration with Python:
-\begin{itemize}
-  \item Supports the standard CPython interpreter
-  \item There is Python support for the Spark core APIs and most ecosystem APIs, such as MLLib.
-  \item IPython Notebook support comes out of the box
-\end{itemize}
-}
-
-\frame{\frametitle{Spark: SQL Integration}
-The Spark component which lets you query structured data in Spark using SQL is called Spark SQL
-\begin{itemize}
-\item Has integrated APIs in Python, Scala and Java
-\item Allows you to integrate Spark Core APIs with SQL
-\item Provides Hive metastore integration so that data managed in Hive can be seamlessly processed via Spark
-\end{itemize}
+Each of these can be considered clinical ``words'' and the encounter forms a clinical ``sentence''.\\\pause
+{\bf Idea:} We can use word2vec to investigate connections between these clinical concepts.
 }
 
 \section{Demo}
-\frame{\frametitle{Open Payments Data}
-Sometimes, doctors and hospitals have financial relationships with health care manufacturing companies. These relationships can include money for research activities, gifts, speaking fees, meals, or travel. The Social Security Act requires CMS to collect information from applicable manufacturers and group purchasing organizations (GPOs) in order to report information about their financial relationships with physicians and hospitals.
+\frame{\frametitle{Demo}
+As part of a Kaggle competition\footnote{https://www.kaggle.com/c/pf2012-diabetes}, 
+Practice Fusion, a digital electronic medical records provider released depersonalized 
+clinical records of 10,000 patients.  I ingested and preprocessed these records into 
+197,340 clinical ``sentences'' using Pig and Hive.\pause
 \vfill
-Let's use Python and Spark via IPython Notebook to explore this dataset on Hadoop.
+MLLib from Spark now contains an implementation of word2vec, so let's use pyspark and IPython Notebook to explore this dataset on Hadoop.
 }
 
 \section{Questions}
@@ -141,6 +117,11 @@ Thanks for your attention!  Questions?
 \item Twitter handle: @casey\_stella 
 \item Email address: cstella@hortonworks.com
 \end{itemize}
+}
+
+\frame{\frametitle{Bibliography}
+\bibliography{NLP_on_non_textual_data}{}
+\bibliographystyle{plain}
 }
 
 \end{document}
