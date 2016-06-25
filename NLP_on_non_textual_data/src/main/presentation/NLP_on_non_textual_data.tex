@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usepackage{beamerthemesplit}
 \usepackage{multirow}
 \usepackage{array}
@@ -36,29 +36,25 @@
 }
 \makeatother
 \begin{document}
-\author{{\bf Casey Stella}}
+\author{{\bf Casey Stella}\\@casey\_stella}
 \institute[Hortonworks]{\includegraphics[width=40px,height=17px]{logo}}
 \title{{\bf NLP Structured Data Investigation on Non-Text}}
-\date{April, 2015} 
+\date{2016} 
 
 \frame{\titlepage} 
 
 \frame{\frametitle{Table of Contents}\tableofcontents} 
 
 \section{Preliminaries}
-
-\frame{\frametitle{Introduction}
-\begin{itemize}
-\item I'm a Principal Architect at Hortonworks
-\item I work primarily doing Data Science in the Hadoop Ecosystem
-\item Prior to this, I've spent my time and had a lot of fun
-  \begin{itemize}
-  \item Doing data mining on medical data at Explorys using the Hadoop ecosystem
-  \item Doing signal processing on seismic data at Ion Geophysical using MapReduce
-  \item Being a graduate student in the Math department at Texas A\&M in algorithmic complexity theory
-  \end{itemize}
-\end{itemize}
-}
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Introduction}
+\begin{center}
+Hi, I'm Casey Stella!
+\end{center}
+\end{frame}
+\endgroup
 
 \frame{\frametitle{Domain Challenges in Data Science}
 A data scientist has to merge analytical skills with domain expertise.
@@ -79,7 +75,7 @@ that attempts to learn relationships between words automatically given a large c
 \begin{itemize}
   \item Gives us a way to find similar words by finding near neighbors in the vector space with cosine similarity.\pause
   \item Uses a neural network to learn vector representations.\pause
-  \item Recent work by Pennington, Socher, and Manning ~\citep{D14-1162} shows that the word2vec model is equivalent to weighting a word co-occurance matrix weighting based on window distance and lowering the dimension by matrix factorization. \pause
+  \item Work by Pennington, Socher, and Manning ~\citep{D14-1162} shows that the word2vec model is equivalent to a word co-occurance matrix weighting based on window distance and lowering the dimension by matrix factorization. \pause
 \end{itemize}
 {\bf Takeaway:} The technique boils down, intuitively, to a riff on word co-occurence.  See here\footnote{http://radimrehurek.com/2014/12/making-sense-of-word2vec/} for more.
 }
