@@ -1,0 +1,163 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{xcolor,colortbl}
+\usepackage{natbib}
+\usepackage{listings}
+\usepackage{physics}
+\usepackage{centernot}
+%%\newcommand{\newblock}{}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usetheme[pageofpages=of,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          ]{Torino}
+\definecolor{light-green}{RGB}{144,238,144}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+%    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} % DELETED
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+\begin{document}
+\author{{\bf Casey Stella}\\@casey\_stella}
+\institute[Hortonworks]{\includegraphics[width=40px,height=17px]{logo}}
+\title{{\bf Data Preparation for Data Science}}
+\date{2016} 
+
+\frame{\titlepage} 
+
+\frame{\frametitle{Table of Contents}\tableofcontents} 
+
+\section{Preliminaries}
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Introduction}
+\begin{center}
+Hi, I'm Casey Stella!
+\end{center}
+\end{frame}
+\endgroup
+
+\frame{\frametitle{Garbage In $\implies$ Garbage Out}
+\begin{exampleblock}{}
+  {\Large ``80\% of the work in any data project is in cleaning the data.''}
+  \vskip5mm
+  \hspace*\fill{\small--- D.J. Patel in {\em Data Jujitsu} }
+\end{exampleblock}
+}
+
+\frame{\frametitle{Data Cleansing $\implies$ Data Understanding}
+There are two ways to understand your data
+\begin{itemize}
+\item Syntactic Understanding
+\item Semantic Understanding
+\end{itemize}
+If you hope to get anything out of your data, you have to have a handle on both.
+}
+
+\frame{\frametitle{Syntactic Understanding: True Types}
+A {\bf true type} is a label applied to data points $x_i$ such that $x_i$ are mutually comparable.
+\begin{itemize}
+\item Schemas type != true data type
+\item A specific column can have many different types
+\end{itemize}
+}
+
+\frame{\frametitle{Syntactic Understanding: Density}
+Data {\bf density} is an indication of how data is clumped together.\pause
+\begin{itemize}
+  \item For numerical data, distributions and statistical characteristics are informative
+  \item For non-numeric data, counts and distinct counts of a canonical representation are extremely useful.\pause
+\end{itemize}
+Canonical representations are representations which give you an idea at a glance of the data format\pause
+\begin{itemize}
+  \item Replacing digits with the character `d'
+  \item Stripping whitespace
+  \item Normalizing punctuation
+\end{itemize}\pause
+
+{\bf Data density is an assumption underlying any conclusions drawn from your data.}
+}
+
+\frame{\frametitle{Syntactic Understanding: Density over Time}
+{\bf $\frac{\Delta Density}{\Delta t}$} is how data clumps change over time.\pause
+
+This kind of analysis can show
+\begin{itemize}
+\item Problems in the data pipeline\pause
+\item Whether the assumptions of your analysis are violated\pause
+\end{itemize}
+
+$\frac{\Delta Density}{\Delta t}$ $\implies$
+\begin{itemize}
+  \item Automation\pause
+  \item Outlier Alerting
+\end{itemize}
+}
+
+\frame{\frametitle{Semantic Understanding: ``Do what I mean, not what I say''}
+Semantic understanding is understanding based on how the data is {\bf used} rather than how it is stored.\pause
+\begin{itemize}
+\item Finding equivalences based on semantic understanding are often context sensitive.\pause
+\item May come from humans (e.g. domain experience and ontologies)\pause
+\item May come from machine learning (e.g. analyzing usage patterns to find synonyms)\pause
+\end{itemize}
+{\bf Semantic understanding does not imply SkyNet}
+}
+
+\section{Demo}
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{DEMO}
+\begin{center}
+
+\end{center}
+\end{frame}
+\endgroup
+
+\frame{\frametitle{Implications for Team Structure}
+To be successful,\pause
+\begin{itemize}
+\item Your data science teams have to be integrally involved in the data transformation and understanding.\pause
+\item Your data science teams have to be {\bf willing} to get their hands dirty\pause
+\item Your data science teams have to be {\bf allowed} to get their hands dirty\pause
+\item Your data science teams need software engineering chops.
+\end{itemize}
+}
+
+
+
+\section{Questions}
+
+\frame{\frametitle{Questions}
+Thanks for your attention!  Questions? 
+\begin{itemize}
+\item Code \& scripts for this talk available on my github presentation page.\footnote{http://github.com/cestella/presentations/}
+\item Find me at http://caseystella.com 
+\item Twitter handle: @casey\_stella 
+\item Email address: cstella@hortonworks.com
+\end{itemize}
+}
+
+\end{document}
