@@ -12,6 +12,7 @@
 \usepackage{centernot}
 %%\newcommand{\newblock}{}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
 \usetheme[pageofpages=of,% String used between the current page and the
                          % total page count.
           bullet=circle,% Use circles instead of squares for bullets.
@@ -37,6 +38,13 @@
   \vskip0pt%
 }
 \makeatother
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
 \begin{document}
 \author{{\bf Casey Stella}\\@casey\_stella}
 \institute[Hortonworks]{\includegraphics[width=40px,height=17px]{logo}}
@@ -135,6 +143,21 @@ Semantic understanding is understanding based on how the data is {\bf used} rath
 \end{center}
 \end{frame}
 \endgroup
+\begin{frame}[plain]
+\Wider[4em]{\includegraphics[scale=0.5]{0_usage.png}}
+\end{frame}
+
+\begin{frame}[plain]
+\Wider[4em]{\includegraphics[scale=0.5]{1_column_list.png}}
+\end{frame}
+
+\begin{frame}[plain]
+\Wider[4em]{\includegraphics[scale=0.40]{2_hl7text.png}}
+\end{frame}
+
+\begin{frame}[plain]
+\Wider[4em]{\includegraphics[scale=0.40]{3_units.png}}
+\end{frame}
 
 \frame{\frametitle{Implications for Team Structure}
 To be successful,\pause
