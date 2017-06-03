@@ -248,7 +248,7 @@ Stellar is the primary method for enrichment in Metron.
 
 \begin{frame}[fragile]
 \begin{verbatim}
-"profile": "distinct_auth_attempts_by_user",
+"profile": "attempts_by_user",
 "foreach": "user",
 "onlyif": "source.type == 'auth'",
 "init" : {
@@ -270,7 +270,7 @@ Stellar is the primary method for enrichment in Metron.
 \begin{verbatim}
 "profile": "auth_distribution",
 "foreach": "'global'",
-"onlyif": "source.type == 'profiler' && profile == 'distinct_auth_attempts_by_user'",
+"onlyif": "source.type == 'profiler' && profile == 'attempts_by_user'",
 "init" : {
   "s" : "STATS_INIT()"
          },
@@ -284,7 +284,7 @@ Stellar is the primary method for enrichment in Metron.
 \begin{frame}[fragile]
 \begin{verbatim}
 window := PROFILE_WINDOW('...')
-profile := PROFILE_GET('distinct_auth_attempts_by_user', user, window)
+profile := PROFILE_GET('attempts_by_user', user, window)
 distinct_auth_attempts := HLLP_CARDINALITY(GET_LAST(profile))
 distribution_profile := PROFILE_GET('auth_distribution', 'global', window)
 stats := STATS_MERGE(distribution_profile)
