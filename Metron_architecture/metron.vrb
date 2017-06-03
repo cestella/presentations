@@ -1,0 +1,9 @@
+\begin{verbatim}
+window := PROFILE_WINDOW('...')
+profile := PROFILE_GET('distinct_auth_attempts_by_user', user, window)
+distinct_auth_attempts := HLLP_CARDINALITY(GET_LAST(profile))
+distribution_profile := PROFILE_GET('auth_distribution', 'global', window)
+stats := STATS_MERGE(distribution_profile)
+distinct_auth_attempts_median := STATS_PERCENTILE(stats, 0.5)
+distinct_auth_attempts_stddev := STATS_SD(stats)
+\end{verbatim}
