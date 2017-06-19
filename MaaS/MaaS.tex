@@ -70,13 +70,13 @@ Hi, I'm Casey Stella!
 }
 
 \frame{\frametitle{Enrichment $\implies$ Data Science}
-Threat identification is a hard thing, it turns out. The key to the solution is enabling better threat identification.
+Threat identification is a hard thing, it turns out. The key to the solution is enabling better threat identification.\pause
 \begin{itemize}
-\item Fixed rules are too coarse and multiply aggressively.
-\item Statistical baselining can adapt better than rules in some circumstances, but has scale challenges as well
-\item Machine learning can adapt better, but can be hard to scale at high velocity
+\item Fixed rules are too coarse and multiply aggressively.\pause
+\item Statistical baselining can adapt better than rules in some circumstances, but has scale challenges as well\pause
+\item Machine learning can adapt better, but can be hard to scale at high velocity\pause
 \end{itemize}
-The ideal solution is to enable the mixing of rules, statistical baselining and machine learning.  
+The ideal solution is to enable the mixing of rules, statistical baselining and machine learning.
 }
 
 \frame{\frametitle{Characteristics of a Solution}
@@ -103,6 +103,16 @@ The ideal solution is to enable the mixing of rules, statistical baselining and 
   \item Share resources fairly by using Yarn for deployment and model lifecycle management
   \end{itemize}
 \end{itemize}
+}
+
+\frame{\frametitle{Requirements of a Model Creator}
+We want to ask as little of data scientists and model creators as possible:\pause
+\begin{itemize}
+\item Handle training your model wherever and however you like\pause
+\item Make your model stateless\pause
+\item Provide a REST interface serving up your model\pause
+\end{itemize}
+From there, MaaS will handle deployment, management and model auto-discovery
 }
 
 \frame{\frametitle{Model as a Service: Stellar}
@@ -140,10 +150,33 @@ This traffic is small enough to be lost in the shuffle of a large organization, 
 \end{itemize}
 }
 
+\begin{frame}[fragile]
+\begin{verbatim}
+dga_model_endpoint := MAAS_GET_ENDPOINT('dga')
+dga_result_map := MAAS_MODEL_APPLY( dga_model_endpoint
+                                  , { 'host' : domain_without_subdomains } 
+                                  )
+dga_result := MAP_GET('is_malicious', dga_result_map)
+is_dga := dga_result != null && dga_result == 'dga'
+\end{verbatim}
+\end{frame}
+
+\section{The Future!}
+\frame{\frametitle{Next Steps}
+Going forward, we'd like to add a few things to make this an even more complete solution\pause
+\begin{itemize}
+\item A UI for model deployment\pause
+\item Model Monitoring w/ dashboards\pause
+\item Alternative endpoint formats (e.g. gRPC)\pause
+\item Automatic conversion of common model output formats to an endpoint\pause
+\item A searchable model registry
+\end{itemize}
+}
+
 \section{Questions}
 
 \frame{\frametitle{Questions}
-Thanks for your attention!  Questions? 
+Thanks for your attention!  Don't forget to come to the cybersecurity Bird of a Feather session Thursday.
 \begin{itemize}
 \item Find me at http://caseystella.com 
 \item Twitter handle: @casey\_stella 

@@ -1,0 +1,8 @@
+\begin{verbatim}
+dga_model_endpoint := MAAS_GET_ENDPOINT('dga')
+dga_result_map := MAAS_MODEL_APPLY( dga_model_endpoint
+                                  , { 'host' : domain_without_subdomains }
+                                  )
+dga_result := MAP_GET('is_malicious', dga_result_map)
+is_dga := dga_result != null && dga_result == 'dga'
+\end{verbatim}
