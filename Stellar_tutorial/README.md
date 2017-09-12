@@ -120,8 +120,6 @@ user
 You can also manipulate many common data structures, such as
 * Maps
 * Lists
-* Sets
-* Multisets
 
 Paste the following into the REPL to explore this
 ```
@@ -140,25 +138,11 @@ map := { 'foo' : 1, 'bar' : 2 }
 map
 # Get the 'foo' key and add 1 to it
 MAP_GET('foo', map) + 1
-# Also have sets
-set := SET_INIT(['casey', 'casey', 'stella'])
-set
-# Sets can be added to as well
-set := SET_ADD(set, 'stella')
-set
-# or removed from
-set := SET_REMOVE(set, 'casey')
-set
-# And also have their length taken
-LENGTH(set)
-# And multisets, which can help keep track of sparse sets
-multiset := MULTISET_INIT([ 'casey', 'casey', 'stella'])
-multiset
-# Some syntactic sugar was added for data structures such as maps, sets, multisets and lists to determine contains
-# stella is in all of the collections
-'stella' in set && 'stella' in list && 'stella' in multiset
-# metron is in none of them
-'metron' in set || 'metron' in list || 'metron' in multiset
+# Some syntactic sugar was added for the collections data structures to determine contains
+# stella is in the list
+'stella' in list 
+# metron is not
+'metron' in list 
 # foo is the only key in the map
 'foo' in map
 ```
