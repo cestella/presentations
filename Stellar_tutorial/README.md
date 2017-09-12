@@ -87,11 +87,11 @@ We can manipulate strings too.  Paste the following into the REPL.
 user := 'cStElLa '
 user := TO_LOWER(TRIM(user))
 user
-# Extract a user like we might get from an authentication record
+# Create a user like we might get from an authentication record
 user := 'LOCAL\\cstella'
 user
 # We can use regexps to pick apart the last bit of the name.
-# We will treat it as a string that has some stuff followed by punctuation followed by some other stuff.                      
+# We will treat it as a string that has some stuff followed by punctuation followed by some other stuff.
 # We want the last bit of stuff
 user := REGEXP_GROUP_VAL( user, '(.*)\\p{Punct}(.*)', 2)
 user
@@ -109,6 +109,10 @@ user
 # or the last one
 user := GET_LAST(user_list)
 user
+# There is also some special syntactical sugar for string contains
+'i' in 'team'
+'tea' in 'team'
+# Indeed, there does not seem to be an i in team, but there is some tea.
 ```
 
 # Data Structures
@@ -148,7 +152,15 @@ set
 # And also have their length taken
 LENGTH(set)
 # And multisets, which can help keep track of sparse sets
-MULTISET_INIT([ 'casey', 'casey', 'stella'])
+multiset := MULTISET_INIT([ 'casey', 'casey', 'stella'])
+multiset
+# Some syntactic sugar was added for data structures such as maps, sets, multisets and lists to determine contains
+# stella is in all of the collections
+'stella' in set && 'stella' in list && 'stella' in multiset
+# metron is in none of them
+'metron' in set || 'metron' in list || 'metron' in multiset
+# foo is the only key in the map
+'foo' in map
 ```
 
 # Stats
