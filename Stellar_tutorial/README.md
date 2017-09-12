@@ -194,8 +194,8 @@ STATS_PERCENTILE(stats2, 50.0)
 STATS_SD(stats2)
 # Now we have 2 distributions stats1 and stats2 that, if I could merge them, should equal stats
 stats_merge := STATS_MERGE([stats1, stats2])
-STATS_PERCENTILE(stats_merge, 50.0)
-STATS_SD(stats_merge)
+STATS_PERCENTILE(stats_merge, 50.0) == STATS_PERCENTILE(stats, 50.0)
+STATS_SD(stats_merge) == STATS_SD(stats)
 # Note this is equivalent to the median and standard deviation of the stats distribution.                                     
 # Also it is different than either of the two component distributions.
 ```
