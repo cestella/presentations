@@ -40,7 +40,7 @@ Using System classloader
 
 The REPL that has a few interesting attributes:
 * Variables and functions are tab completed (go ahead and type `TO` and then tab)
-* Every stellar function has documentation that can be interrogated via the REPL.  The syntax is ?FUNCTION_NAME (e.g. ?TO_UPPER)
+* Every stellar function has documentation that can be interrogated via the REPL.  The syntax is `?FUNCTION_NAME` (e.g. `?TO_UPPER`)
   * Try it out yourself by typing `?` and then tab to get a list of possible functions and variables to use
   * Try it out further by typing `?TO_UPPER` and then enter to get the documentation for `TO_UPPER`
 
