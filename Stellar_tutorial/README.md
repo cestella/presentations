@@ -174,10 +174,7 @@ Let's play around with that here by pasting these into the REPL:
 ```
 # You can initiate a stats object and interact with it
 stats := STATS_INIT()
-stats := STATS_ADD(stats, 1.0)
-stats := STATS_ADD(stats, 2.0)
-stats := STATS_ADD(stats, 3.0)
-stats := STATS_ADD(stats, 5.0)
+stats := STATS_ADD(stats, 1.0, 2.0, 3.0, 5.0)
 # Now we can interrogate stats objects to get some idea about how the data is distributed
 # This will become important for use-cases involving statistical baselining
 # How about the median
@@ -188,13 +185,11 @@ STATS_SD(stats)
 # I can also split the distribution up and merge it back together
 # We can create one distribution of 1,2, and another one for 3 and 5
 stats1 := STATS_INIT()
-stats1 := STATS_ADD(stats1, 1.0)
-stats1 := STATS_ADD(stats1, 2.0)
+stats1 := STATS_ADD(stats1, 1.0, 2.0)
 STATS_PERCENTILE(stats1, 50.0)
 STATS_SD(stats1)
 stats2 := STATS_INIT()
-stats2 := STATS_ADD(stats2, 3.0)
-stats2 := STATS_ADD(stats2, 5.0)
+stats2 := STATS_ADD(stats2, 3.0, 5.0)
 STATS_PERCENTILE(stats2, 50.0)
 STATS_SD(stats2)
 # Now we have 2 distributions stats1 and stats2 that, if I could merge them, should equal stats
