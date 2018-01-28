@@ -1,0 +1,71 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage{beamerthemesplit}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{textcomp}
+\usepackage{listings}
+\begin{document}
+\title{Now wait a minute\textinterrobang}
+\subtitle{You Probably Aren't Monitoring Enough}
+\author{Casey Stella}
+\date{January 29, 2018}
+
+\frame{\titlepage} 
+
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Introduction}
+\begin{center}
+Hi, I'm Casey Stella!
+\end{center}
+\end{frame}
+\endgroup
+
+
+\frame{\frametitle{Monitoring: My Observations}
+\begin{itemize}
+\item {\bf Most} people monitor machines\pause
+   \begin{itemize}
+   \item Capability exists in dev ops and infrastructure groups\pause
+   \end{itemize}
+\item {\bf Some} people monitor applications\pause
+   \begin{itemize}
+   \item Most application monitoring is focused on performance\pause
+   \item You should be monitoring for correctness too\pause
+   \end{itemize}
+\item {\bf A few} people monitor their data pipelines\pause
+   \begin{itemize}
+   \item It's almost always ``did it complete or not?''
+   \end{itemize}
+\end{itemize}
+}
+
+\frame{\frametitle{Monitor Your Data}
+\begin{itemize}
+\item Ingesting Data without ongoing monitoring is like deploying code without unit tests\pause
+   \begin{itemize}
+   \item You want to ensure regressions of the assumptions of your data don't happen\pause
+   \item Things like completeness and consistency are key\pause
+   \end{itemize}
+\item Your downstream analytics should {\bf define} your data monitoring\pause
+   \begin{itemize}
+   \item Check pre-conditions: Assumptions about data consistency (e.g. seasonality, completeness, distribution)\pause
+   \item Check post-conditions: Assumptions about analytic consistency (e.g. distribution of output for machine learning)\pause
+   \item This should be a {\bf shared responsibility} between data science and data engineering teams.
+   \end{itemize}
+\end{itemize}
+}
+
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Key Takeaway}
+\begin{center}
+Any data ingestion plan should include a plan for ongoing monitoring or else you're courting disaster...or at least incorrect results.
+\end{center}
+\end{frame}
+\endgroup
+
+
+\end{document}
