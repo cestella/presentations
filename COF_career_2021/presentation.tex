@@ -1,0 +1,264 @@
+\documentclass[aspectratio=169
+              ,usenames
+              ,dvipsnames
+              %uncomment to see notes
+              %,handout
+              ]{beamer}
+
+\usetheme{metropolis}
+%gets rid of bottom navigation bars
+\definecolor{iicolor}{RGB}{232,150,70}
+\setbeamercolor{frametitle}{bg=iicolor}
+%\setbeamercolor{frametitle}{bg=white, fg=black}
+
+\setbeamertemplate{footline}[frame number]{}
+
+%gets rid of bottom navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+%gets rid of footer
+%will override 'frame number' instruction above
+%comment out to revert to previous/default definitions
+\setbeamertemplate{footline}{}
+
+%un-comment to see the notes
+%\setbeameroption{show only notes} 
+
+\usepackage{appendixnumberbeamer}
+\usepackage{mathtools}
+\usepackage{environ}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\captionsetup{compatibility=false}
+\usepackage[scale=2]{ccicons}
+\usepackage{hyperref}
+\usepackage{pgfplots, pgfplotstable}
+\usepackage{xparse}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=1.12} % for better axis label placement
+
+% Create a function for generating inverse normally distributed numbers using the Box–Muller transform
+\pgfmathdeclarefunction{invgauss}{2}{%
+  \pgfmathparse{sqrt(-2*ln(#1))*cos(deg(2*pi*#2))}%
+}
+
+\pgfmathsetseed{3}
+% Initialise an empty table with a certain number of rows
+\pgfplotstablenew[
+    create on use/x/.style={create col/expr=\pgfplotstablerow},
+    create on use/brown1/.style={
+        create col/expr accum={
+            (
+                max(
+                    min(
+                        invgauss(rnd,rnd)*0.1+\pgfmathaccuma,
+                        inf % Set upper limit here
+                    ),
+                    -inf % Set lower limit here
+                )
+            )
+        }{0}
+    },
+    create on use/brown2/.style={
+        create col/expr accum={
+            (
+                max(
+                    min(
+                        invgauss(rnd,rnd)*0.1+\pgfmathaccuma,
+                        inf
+                    ),
+                    -inf
+                )
+            )
+        }{0}
+    },
+    columns={x, brown1, brown2}]{201}\loadedtable 
+
+\usetikzlibrary{decorations.text,graphs,graphs.standard,fadings,shapes.arrows,shadows}
+
+\definecolor{mygray}{RGB}{208,208,208}
+\definecolor{background}{RGB}{29,47,43}
+\newcommand*{\mytextstyle}{\sffamily\small\bfseries\color{black!85}}
+\newcommand{\arcarrow}[3]{%
+   % inner radius, middle radius, outer radius, start angle,
+   % end angle, tip protusion angle, options, text
+   \pgfmathsetmacro{\rin}{2.3}
+   \pgfmathsetmacro{\rmid}{2.8}
+   \pgfmathsetmacro{\rout}{3.3}
+   \pgfmathsetmacro{\astart}{#1}
+   \pgfmathsetmacro{\aend}{#2}
+   \pgfmathsetmacro{\atip}{5}
+   \fill[mygray, very thick] (\astart+\atip:\rin)
+                         arc (\astart+\atip:\aend:\rin)
+      -- (\aend-\atip:\rmid)
+      -- (\aend:\rout)   arc (\aend:\astart+\atip:\rout)
+      -- (\astart:\rmid) -- cycle;
+   \path[
+      decoration = {
+         text along path,
+         text = {|\mytextstyle|#3},
+         text align = {align = center},
+         raise = -1.0ex
+      },
+      decorate
+   ](\astart+\atip:\rmid) arc (\astart+\atip:\aend+\atip:\rmid);
+}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
+
+\title{{\bf Software Engineering}}
+\date{}
+\subtitle{For Fun and Profit}
+
+\begin{document}
+
+\maketitle
+\section{Introduction}
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Introduction}
+\begin{center}
+Hi, I'm Casey Stella!
+\end{center}
+\end{frame}
+\endgroup
+
+\frame{\frametitle{Introduction}
+A little bit about the now...
+\begin{itemize}
+  \item I am a staff engineer at Stripe\pause
+  \item Stripe is a fintech company which processes a good chunk of the internet's payments\pause
+  \item Specifically, I'm the lead of the Machine Learning Infrastructure\pause
+  \item Stripe uses a lot of machine learning: fraud detection, image recognition, etc.\pause
+  \item We ensure ML models can run at the speed and scale of internet commerce.\pause
+\end{itemize}
+Open Questions:\\
+  What even is software engineering?\\
+  How in the heck did I end up doing this?
+}
+
+\section{Software Engineering}
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Programming: The Art}
+\begin{center}
+Programming is the art of turning
+fuzzy ideas into working code.
+\end{center}
+\end{frame}
+\endgroup
+
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Software Engineering: The Discipline}
+\begin{center}
+Software Engineering is the discipline of programming 
+in such a way that your coworkers don't want to kill you
+in your sleep\pause...often.
+\end{center}
+\end{frame}
+\endgroup
+
+
+\frame{\frametitle{Software Engineering: Unexpected Skills}
+There are a few unexpected skills that you might not have thought to cultivate:\pause
+\begin{itemize}
+\item The Scientific Method: Software Engineering is an experimental science/engineering discipline.\pause
+\item Logic and Reasoning: Most practical software is a complex set of systems with complex dependencies and expectations. Reasoning about structure is important.\pause
+\item Soft Skills are more important than technical skills: Humans are more complex than software...by a lot.
+\end{itemize}
+}
+
+\section{How in the heck did I get here?}
+
+\frame{\frametitle{Education: Lessons Learned, Dues Paid}
+BS in Computer Science / Math and a MS in Math, but what lessons were learned?\pause
+\begin{itemize}
+\item Liberal Arts Education: An investment in soft skills\pause
+\item Don't Specialize too Early: Math taught me how to think in a structured way\pause
+\item Choosing electives is like investing in yourself\pause
+\item Go slow: Don't be in such a hurry to leave
+\end{itemize}
+}
+
+\frame{\frametitle{Starting Up with a Startup}
+First job out of grad school and I was out of the frying-pan and into the fire\pause
+\begin{itemize}
+\item Negotiating: I was a well-educated moron\pause
+\item Academic programming $\ne$ Software Engineering: Interesting $\not \Rightarrow$ Lucrative\pause
+\item Software floats on a sea of money: Learn about economics and business\pause
+\item Startups are a mood, especially when they stop being startups\pause
+\item Leaving is a Strategy
+\end{itemize}
+}
+
+\frame{\frametitle{Oil Industry Days}
+More Data $\implies$ More Problems, but some lessons\pause
+\begin{itemize}
+\item Careers are an optimization problem: Specialize to the area which maximizes your interests, difficulty of entry, and usefulness in making revenue\pause
+\item Rule of Thumb: Be close enough to the revenue stream to get your toes wet but not drown\pause
+\item Legacy codebases are like archaeological digs filled with dynamite: make changes with great care
+\end{itemize}
+}
+
+\begingroup
+\Huge
+\begin{frame}
+\frametitle{Rinse and Repeat}
+\begin{center}
+Wash, Rinse and Repeat: Sisyphus has nothing on me
+\end{center}
+\end{frame}
+\endgroup
+
+\frame{\frametitle{Consulting: That Billable Hours Grind}
+Consulting in a hot Silicon Valley startup is still...consulting\pause
+\begin{itemize}
+\item Consulting: sometimes your job is to be the neck to choke\pause
+\item Everything is negotiable\pause
+\item Pigeonholes are just suggestions\pause
+\item Sometimes you can do everything right and still fail
+\end{itemize}
+}
+
+\frame{\frametitle{Stripe: The Present}
+And now you're caught up...\pause
+\begin{itemize}
+\item Go where you're needed most (and where they're willing to pay)\pause
+\item Different companies have different professional cultures\pause
+\item Ambition can only take you so far: Knowing when to stop...
+\end{itemize}
+}
+
+\frame{\frametitle{Career Guidance: A recap}
+Things I wish I had known when I started:
+\begin{itemize}
+\item Learn how to negotiate\pause
+\item Demonstrated curiosity and interest is the most desireable quality in any software engineer\pause
+\item Soft Skills become more of the job as your career advances\pause
+\item Develop thick skin against firing and judgement\pause
+\item Learn how to grow within a company\pause
+\item Know when to leave: Moving every 2 years early on is pretty good strategy for many\pause
+\item Know what you like and what you don't.  Do the former, don't do the latter.\pause
+\item Learn how to interview (it changes over time)
+\end{itemize}
+}
+
+\frame{\frametitle{Questions}
+Thanks for your attention!  Questions? 
+}
+
+\end{document}
